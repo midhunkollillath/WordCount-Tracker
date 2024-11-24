@@ -52,7 +52,7 @@ const HomePage = () => {
 
   const handleFavorite = (id) => {
     axios
-      .put(REST_API + `/api/insights/${id}/favorite`)
+      .patch(REST_API + `/api/insights/${id}/favorite`)
       .then(() => {
         setInsights((prev) =>
           prev.map((item) =>

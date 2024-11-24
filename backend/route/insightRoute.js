@@ -10,6 +10,6 @@ router.get('/insights',getAllInsights);
 
 router.delete('/insights/:id',deleteInsight);
 
-router.put('/insights/:id/favorite',updateInsightFavorite);
+router.patch('/insights/:id/favorite',updateInsightFavorite);
 
 module.exports = router;

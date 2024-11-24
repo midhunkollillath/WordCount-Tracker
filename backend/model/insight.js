@@ -1,54 +1,63 @@
+const { DataTypes } = require('sequelize');
 const sequelize = require('../config/dbConnection');
 
+const Insight = sequelize.define('Insight', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+    url: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+    },
+    word_count: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    is_favorite: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+}, {
+    tableName: 'Insight',
+    timestamps: false,
+});
 const createInsight = async (data) => {
     try {
-        const query = `
-            INSERT INTO Insight (url, word_count, is_favorite)
-            VALUES (:url, :word_count, :is_favorite)
-        `;
-        const [result] = await sequelize.query(query, {
-            replacements: data,
-        });
-        return result; 
+        const insight = await Insight.create(data);
+        return insight;
     } catch (error) {
-        console.error('Error in adding insights:', error);
+        console.error('Error in adding insight:', error);
         throw new Error('Failed to create insight');
     }
 };
 
 const updateInsights = async (data, id) => {
     try {
-        const query = `
-            UPDATE Insight 
-            SET word_count = :word_count, is_favorite = :is_favorite 
-            WHERE id = :id
-        `;
-        const [result] = await sequelize.query(query, {
-            replacements: { ...data, id },
+        const [updatedRows] = await Insight.update(data, {
+            where: { id },
         });
-        return result.affectedRows > 0 ? true :false; 
+        return updatedRows > 0;
     } catch (error) {
         console.error('Error in updating the insights:', error);
-        throw new Error(`Failed to update insight: ${error.message}`);
+        throw new Error('Failed to update insight');
     }
 };
 
-
 const deleteInsights = async (id) => {
     try {
-        const query = `
-            DELETE FROM Insight 
-            WHERE id = :id
-        `;
-        const [result] = await sequelize.query(query, {
-            replacements: { id },
+        const deletedRows = await Insight.destroy({
+            where: { id },
         });
-        return result > 0; 
+        return deletedRows > 0;
     } catch (error) {
         console.error('Error in deleting the insights:', error);
         throw new Error('Failed to delete insight');
     }
 };
+
 
 const getAllInsights = async () => {
     try {

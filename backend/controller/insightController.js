@@ -4,7 +4,10 @@ const {getWordCount} = require('../helper/helpers.js');
 const createInsight = async (req, res) => {
     try {
         const { url } = req.body;
-        
+        const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,4}(\/[^\s]*)?$/;
+        if (!urlPattern.test(url)) {
+          return res.status(400).json({ success: 0, message: "Invalid URL format" });
+        }
         let alreadyExistURL = await Insight.checkIfUrlExists(url); 
         if (alreadyExistURL) {
             return res.status(400).json({ success: 0, message: "Website link already exists" });
@@ -62,19 +65,16 @@ const deleteInsight = async (req, res) => {
 
 const updateInsightFavorite = async (req, res) => {
     const {id} =req.params;
-
     try {
         const insight = await Insight.getInsightByURL(id);
 
-        if (!insight) {
+        if (!insight) { 
             return res.status(404).json({ success: 0, message: 'Insight not found' });
         }
 
         let is_favorite = insight.is_favorite ===0 ? 1 : 0
         const updated = await Insight.updateInsights(
-            { word_count: insight.word_count,
-                 is_favorite:is_favorite
-                 },
+            {is_favorite:is_favorite},
                   id);
         if (updated) {
             res.status(200).json({
