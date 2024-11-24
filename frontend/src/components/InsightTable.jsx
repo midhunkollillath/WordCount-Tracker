@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
           <TableBody>
             { insights?.length > 0 && insights?.map((insight) => (
               <TableRow key={insight.id}>
-                <TableCell>{insight.url}</TableCell>
+                <TableCell>{insight.website_url}</TableCell>
                 <TableCell>{insight.word_count}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => onFavorite(insight.id)}>

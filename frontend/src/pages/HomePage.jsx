@@ -7,7 +7,6 @@ import { REST_API } from "../constant/DefaultValues";
 
 const HomePage = () => {
   const [url, setUrl] = useState("");
-  const [wordCount, setWordCount] = useState(null);
   const [insights, setInsights] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -31,7 +30,7 @@ const HomePage = () => {
     setError("");
     setLoading(true);
     axios
-      .post(REST_API + "/api/create-insight", { url })
+      .post(REST_API + "/api/create-insight", {website_url: url })
       .then((response) => {
         setUrl("");
         if (response.data.success === 1) {

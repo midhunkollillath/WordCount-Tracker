@@ -7,7 +7,7 @@ const Insight = sequelize.define('Insight', {
         primaryKey: true,
         autoIncrement: true,
     },
-    url: {
+    website_url: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -87,11 +87,11 @@ const getInsightByURL = async (id) => {
         throw new Error('Failed to fetch insight by URL');
     }
 };
-const checkIfUrlExists = async (url) => {
+const checkIfUrlExists = async (website_url) => {
     const result = await sequelize.query(
-        `SELECT 1 FROM Insight WHERE url = :url LIMIT 1`, 
+        `SELECT 1 FROM Insight WHERE website_url = :website_url LIMIT 1`, 
         {
-            replacements: { url },
+            replacements: { website_url },
             type: sequelize.QueryTypes.SELECT,
         }
     );

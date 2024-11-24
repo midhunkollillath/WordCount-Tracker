@@ -3,18 +3,18 @@ const {getWordCount} = require('../helper/helpers.js');
 
 const createInsight = async (req, res) => {
     try {
-        const { url } = req.body;
+        const { website_url } = req.body;
         const urlPattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,4}(\/[^\s]*)?$/;
-        if (!urlPattern.test(url)) {
+        if (!urlPattern.test(website_url)) {
           return res.status(400).json({ success: 0, message: "Invalid URL format" });
         }
-        let alreadyExistURL = await Insight.checkIfUrlExists(url); 
+        let alreadyExistURL = await Insight.checkIfUrlExists(website_url); 
         if (alreadyExistURL) {
             return res.status(400).json({ success: 0, message: "Website link already exists" });
         }else{
-        const wordCount = await getWordCount(url);
+        const wordCount = await getWordCount(website_url);
         const result = await Insight.createInsight({
-            url,
+            website_url,
             word_count: wordCount,
             is_favorite: false,
         });

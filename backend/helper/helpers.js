@@ -1,14 +1,14 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
 
-const getWordCount = async (url) => {
+const getWordCount = async (website_url) => {
   try {
    
-    if (!/^https?:\/\//.test(url)) {
+    if (!/^https?:\/\//.test(website_url)) {
       throw new Error('Invalid URL. Please provide a valid HTTP/HTTPS URL.');
     }
 
-    const response = await axios.get(url, { timeout: 5000 });
+    const response = await axios.get(website_url, { timeout: 5000 });
     if (response.status !== 200) {
       throw new Error(`Failed to fetch URL. HTTP Status: ${response.status}`);
     }
